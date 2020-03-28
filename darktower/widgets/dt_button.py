@@ -1,11 +1,9 @@
 from typing import Tuple, List
 
-import os
 import pygame
 
-from darktower.constants.dt_color import DTColor
+from darktower.constants.defaults import DEFAULT_FONT, DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR
 from darktower.dt_game_display import DTGameDisplay
-from darktower.views.base_view import FONT
 
 
 class DTButton:
@@ -26,9 +24,9 @@ class DTButton:
         self.action_args = action_args
         self.color = kwargs.get('color')
         self.text = kwargs.get('text')
-        self.font = kwargs.get('font', os.path.join(FONT, 'alarm clock.ttf'))
-        self.font_size = kwargs.get('font_size', 35)
-        self.text_color = kwargs.get('text_color', DTColor.BLACK)
+        self.font = kwargs.get('font', DEFAULT_FONT)
+        self.font_size = kwargs.get('font_size', DEFAULT_FONT_SIZE)
+        self.text_color = kwargs.get('text_color', DEFAULT_FONT_COLOR)
 
     def draw(self):
         if self.is_mouse_hovering():
@@ -53,7 +51,7 @@ class DTButton:
     def is_mouse_hovering(self):
         mouse_pos = pygame.mouse.get_pos()
         if self.y_pos < mouse_pos[1] < (self.y_pos + self.height):
-            if self.x_pos < mouse_pos[1] < (self.x_pos + self.width):
+            if self.x_pos < mouse_pos[0] < (self.x_pos + self.width):
                 return True
 
         return False

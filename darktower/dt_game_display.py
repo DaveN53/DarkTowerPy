@@ -11,6 +11,7 @@ class DTGameDisplay:
         pygame.display.set_caption('Dark Tower')
         self.difficulty = None
         self.num_players = None
+        self.current_player = 0
 
 
 

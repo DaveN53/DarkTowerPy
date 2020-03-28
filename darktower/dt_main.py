@@ -30,7 +30,7 @@ class DTMain(object):
                 self.view_manager.update(event)
                 self.audio_player.trigger_audio(event)
 
-            self.dt_game_display.game.fill((255, 255, 255))
+            self.dt_game_display.game.fill((0, 0, 0))
             self.view_manager.display()
 
             pygame.display.update()

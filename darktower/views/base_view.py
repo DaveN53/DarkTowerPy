@@ -5,7 +5,7 @@ import os
 from darktower.dt_game_display import DTGameDisplay
 
 RESOURCES = os.path.join(os.path.dirname(__file__), 'resources')
-FONT = os.path.join(RESOURCES, 'font')
+FONTS = os.path.join(RESOURCES, 'font')
 IMAGES = os.path.join(RESOURCES, 'images')
 
 
