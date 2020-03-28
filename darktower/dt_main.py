@@ -1,19 +1,46 @@
-from darktower.dt_view import DTView
-import tkinter
+import pygame
+
+from darktower.dt_event import DTEvent
+from darktower.dt_game_display import DTGameDisplay
+from darktower.views.audio_player import AudioPlayer, AudioFile
+from darktower.views.event_manager import EventManager
+from darktower.views.view_manager import ViewManager
 
 
 class DTMain(object):
     def __init__(self):
-        self.root = tkinter.Tk()
-        self.root.title('Dark Tower')
-        self.main_frame = DTView(self.root)
-        self.main_frame.grid()
+        self.dt_game_display = DTGameDisplay()
+        self.view_manager = ViewManager(self.dt_game_display)
+        self.event_manager = EventManager()
+        self.audio_player = AudioPlayer()
+        self.clock = pygame.time.Clock()
 
+    def run_game(self):
+        pygame.init()
 
-    def start_game(self):
-        self.root.mainloop()
+        self.event_manager.start()
+
+        run_game = True
+        while run_game:
+            event = pygame.event.poll()
+            if event.type == pygame.QUIT:
+                break
+            self.dt_game_display.current_event = event
+            if self.event_manager.is_view_event(event):
+                self.view_manager.update(event)
+                self.audio_player.trigger_audio(event)
+
+            self.dt_game_display.game.fill((255, 255, 255))
+            self.view_manager.display()
+
+            pygame.display.update()
+            self.clock.tick(60)
+
+    def exit_game(self):
+        pygame.quit()
 
 
 if __name__ == "__main__":
     app = DTMain()
-    app.start_game()
+    app.run_game()
+    app.exit_game()

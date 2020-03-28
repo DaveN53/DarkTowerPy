@@ -1,9 +1,9 @@
 import os
-from tkinter import *
-import time
 import re
+from tkinter import *
+
 from PIL import ImageTk, Image
-from darktower.audio_player import AudioPlayer
+
 
 RESOURCES = os.path.join(os.path.dirname(__file__), 'resources')
 FONT = os.path.join(RESOURCES, 'font')
@@ -20,7 +20,7 @@ class DTView(Frame):
         parent.geometry("{}x{}".format(self.width, self.height))
         parent.overrideredirect(1)
         self.images = self.setup_images()
-        self.audio_player = AudioPlayer()
+        #self.audio_player = AudioPlayer()
         self.frames = {}
         self.initialize()
 
