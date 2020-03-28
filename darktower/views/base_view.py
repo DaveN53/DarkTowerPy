@@ -19,3 +19,6 @@ class BaseView(ABC):
 
     def play_audio(self):
         pass
+
+    def refresh(self):
+        pass

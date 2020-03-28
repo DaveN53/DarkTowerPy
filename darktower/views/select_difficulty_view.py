@@ -1,7 +1,7 @@
 import pygame
 
 from darktower.constants.dt_color import DTColor
-from darktower.dt_event import DTEvent
+from darktower.enums import DTEvent
 from darktower.dt_game_display import DTGameDisplay
 from darktower.views.base_view import BaseView
 from darktower.widgets.dt_button import DTButton

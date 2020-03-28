@@ -1,7 +1,7 @@
 import pygame
 from pygame.event import Event
 
-from darktower.dt_event import DTEvent
+from darktower.enums import DTEvent
 
 
 class EventManager:
@@ -11,7 +11,7 @@ class EventManager:
 
     @staticmethod
     def start():
-        start_event = DTEvent.SELECT_DIFFICULTY
+        start_event = DTEvent.SELECT_BAZAAR
         intro_event = pygame.event.Event(start_event, {})
         pygame.event.post(intro_event)
 

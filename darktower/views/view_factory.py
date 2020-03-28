@@ -1,5 +1,6 @@
-from darktower.dt_event import DTEvent
+from darktower.enums import DTEvent
 from darktower.dt_game_display import DTGameDisplay
+from darktower.views.bazaar_view import BazaarView
 from darktower.views.intro_view import IntroView
 from darktower.views.player_turn_select_view import PlayerTurnSelectView
 from darktower.views.select_difficulty_view import SelectDifficultyView
@@ -20,6 +21,8 @@ class ViewFactory:
             return SelectPlayersView(self.game_display)
         elif dt_event == DTEvent.START_PLAYER_TURN:
             return PlayerTurnSelectView(self.game_display)
+        elif dt_event == DTEvent.SELECT_BAZAAR:
+            return BazaarView(self.game_display)
 
         raise ViewException('Cannot build view for event: %s', dt_event)
 

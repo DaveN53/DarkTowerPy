@@ -8,9 +8,12 @@ class ViewManager:
         self.view_factory = ViewFactory(self.game_display)
         self.views = {}
         self.event = None
+        self.current_view = None
 
     def update(self, event):
         self.event = event
+        if self.current_view:
+            self.current_view.refresh()
 
     def display(self):
         if not self.event:
@@ -18,9 +21,9 @@ class ViewManager:
 
         event_value = self.event.type
 
-        view = self.views.get(event_value)
-        if not view:
-            view = self.view_factory.build_view(event_value)
-            self.views[event_value] = view
+        self.current_view = self.views.get(event_value)
+        if not self.current_view:
+            self.current_view = self.view_factory.build_view(event_value)
+            self.views[event_value] = self.current_view
 
-        view.display()
+        self.current_view.display()

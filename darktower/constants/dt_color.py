@@ -8,7 +8,7 @@ class DTColor:
     #TODO convert 100 -> 255
     BUTTON_DARK_TAN = (49, 41.6, 23.1)
     BUTTON_LIGHT_TAN = (81.2, 74.9, 60.4)
-    BUTTON_ORANGE = (90.6, 54.1, 8.2)
-    BUTTON_GREEN = (16.1, 57.6, 20)
-    BUTTON_NO_RED = (92.9, 12,2, 3.1)
+    BUTTON_ORANGE = (231, 138, 21)
+    BUTTON_GREEN = (41, 147, 51)
+    BUTTON_NO_RED = (237, 31, 8)
     BUTTON_REPEAT = (71.8, 58, 46.7)

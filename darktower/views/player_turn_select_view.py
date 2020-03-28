@@ -2,7 +2,7 @@ import pygame
 
 from darktower.constants.defaults import DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR, CLOCK_FONT
 from darktower.constants.dt_color import DTColor
-from darktower.dt_event import DTEvent
+from darktower.enums import DTEvent
 from darktower.dt_game_display import DTGameDisplay
 from darktower.views.base_view import BaseView
 from darktower.widgets.dt_button import DTButton
@@ -15,8 +15,8 @@ class PlayerTurnSelectView(BaseView):
             game_display,
             (self.game_display.width/3, self.game_display.height/4),
             (self.game_display.width/3, self.game_display.height/4),
-            action=self.set_players,
-            action_args=[1],
+            action=self.make_selection,
+            action_args=[DTEvent.SELECT_BAZAAR],
             color=DTColor.BUTTON_BLUE,
             text='Bazaar',
             font_size=20)
@@ -24,8 +24,8 @@ class PlayerTurnSelectView(BaseView):
             game_display,
             (0, (self.game_display.height/4) * 2),
             (self.game_display.width/3, self.game_display.height / 4),
-            action=self.set_players,
-            action_args=[2],
+            action=self.make_selection,
+            action_args=[DTEvent.SELECT_TOMB_RUIN],
             color=DTColor.BUTTON_BLUE,
             text='Tomb|Ruin',
             font_size=20)
@@ -33,8 +33,8 @@ class PlayerTurnSelectView(BaseView):
             game_display,
             (self.game_display.width/3, (self.game_display.height/4) * 2),
             (self.game_display.width/3, self.game_display.height / 4),
-            action=self.set_players,
-            action_args=[3],
+            action=self.make_selection,
+            action_args=[DTEvent.SELECT_MOVE],
             color=DTColor.BUTTON_BLUE,
             text='Move',
             font_size=20)
@@ -42,8 +42,8 @@ class PlayerTurnSelectView(BaseView):
             game_display,
             ((self.game_display.width/3)*2, (self.game_display.height/4) * 2),
             (self.game_display.width/3, self.game_display.height / 4),
-            action=self.set_players,
-            action_args=[4],
+            action=self.make_selection,
+            action_args=[DTEvent.SELECT_SANCTUARY_CITADEL],
             color=DTColor.BUTTON_BLUE,
             text='Sanctuary',
             font_size=20)
@@ -51,8 +51,8 @@ class PlayerTurnSelectView(BaseView):
             game_display,
             (0, (self.game_display.height / 4) * 3),
             (self.game_display.width/3, self.game_display.height / 4),
-            action=self.set_players,
-            action_args=[4],
+            action=self.make_selection,
+            action_args=[DTEvent.SELECT_DARK_TOWER],
             color=DTColor.BUTTON_RED,
             text='DarkTower',
             font_size=20)
@@ -60,8 +60,8 @@ class PlayerTurnSelectView(BaseView):
             game_display,
             (self.game_display.width/3, (self.game_display.height / 4) * 3),
             (self.game_display.width/3, self.game_display.height / 4),
-            action=self.set_players,
-            action_args=[4],
+            action=self.make_selection,
+            action_args=[DTEvent.SELECT_FRONTIER],
             color=DTColor.BUTTON_BLUE,
             text='Frontier',
             font_size=20)
@@ -69,8 +69,8 @@ class PlayerTurnSelectView(BaseView):
             game_display,
             ((self.game_display.width/3)*2, (self.game_display.height / 4) * 3),
             (self.game_display.width/3, self.game_display.height / 4),
-            action=self.set_players,
-            action_args=[4],
+            action=self.make_selection,
+            action_args=[DTEvent.SELECT_INVENTORY],
             color=DTColor.BUTTON_DARK_TAN,
             text='Inventory',
             font_size=20)
@@ -79,10 +79,9 @@ class PlayerTurnSelectView(BaseView):
             CLOCK_FONT, DEFAULT_FONT_SIZE).render(
             f'P{game_display.current_player + 1}', True, DTColor.BUTTON_NO_RED)
 
-    def set_players(self, num_players: int):
-        self.game_display.num_players = num_players
-
-        intro_event = pygame.event.Event(DTEvent.START_PLAYER_TURN, {'player': 0})
+    @staticmethod
+    def make_selection(event: DTEvent):
+        intro_event = pygame.event.Event(event)
         pygame.event.post(intro_event)
 
     def display(self):
@@ -95,5 +94,5 @@ class PlayerTurnSelectView(BaseView):
         self.inventory_button.draw()
 
         text_rect = self.player_text.get_rect()
-        text_rect.center = (self.game_display.width/2,self.game_display.height/8)
+        text_rect.center = (self.game_display.width/2, self.game_display.height/8)
         self.game_display.game.blit(self.player_text, text_rect)

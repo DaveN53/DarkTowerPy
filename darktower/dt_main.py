@@ -1,6 +1,6 @@
 import pygame
 
-from darktower.dt_event import DTEvent
+from darktower.enums import DTEvent
 from darktower.dt_game_display import DTGameDisplay
 from darktower.views.audio_player import AudioPlayer, AudioFile
 from darktower.views.event_manager import EventManager
