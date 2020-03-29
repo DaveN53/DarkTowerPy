@@ -58,12 +58,12 @@ class DTGameDisplay:
             if (item not in (InventoryItems.FOOD, InventoryItems.WARRIOR)) and self.current_items[item]:
                 return pygame.event.Event(DTUserEvent.DT_SELECTION,
                                           {'dt_event': DTEvent.SHOW_INVENTORY,
-                                           'item': item})
+                                           'items': [item]})
             player.gold -= price
             player.update_item(item, item_count)
             return pygame.event.Event(DTUserEvent.DT_SELECTION,
                                       {'dt_event': DTEvent.SHOW_INVENTORY,
-                                       'item': item})
+                                       'items': [item]})
 
 
 

@@ -2,7 +2,7 @@ import pygame
 from pygame.event import Event
 
 from darktower.dt_game_display import DTGameDisplay
-from darktower.enums import DTEvent, DTUserEvent
+from darktower.enums import DTEvent, DTUserEvent, InventoryItems
 from darktower.views.audio_player import AudioPlayer
 from darktower.views.view_manager import ViewManager
 
@@ -50,8 +50,21 @@ class EventManager:
             self.game_display.end_turn()
 
         if dt_event == DTEvent.SHOW_INVENTORY:
-            item = event.dict.get('item')
-            self.view_manager.update(dt_event, item=item)
+            items = event.dict.get('items')
+            self.view_manager.update(dt_event, items=items)
+        elif dt_event == DTEvent.SELECT_INVENTORY:
+            self.view_manager.update(dt_event, items = [
+                InventoryItems.FOOD,
+                InventoryItems.WARRIOR,
+                InventoryItems.BEAST,
+                InventoryItems.HEALER,
+                InventoryItems.SCOUT,
+                InventoryItems.SWORD,
+                InventoryItems.BRASS_KEY,
+                InventoryItems.SILVER_KEY,
+                InventoryItems.GOLD_KEY
+            ])
+
         elif dt_event:
             self.view_manager.update(dt_event)
         self.audio_player.trigger_audio(dt_event)

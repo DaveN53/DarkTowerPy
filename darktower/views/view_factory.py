@@ -1,4 +1,4 @@
-from darktower.enums import DTEvent
+from darktower.enums import DTEvent, InventoryItems
 from darktower.dt_game_display import DTGameDisplay
 from darktower.views.bazaar_closed_view import BazaarClosedView
 from darktower.views.bazaar_view import BazaarView
@@ -29,6 +29,18 @@ class ViewFactory:
             return BazaarClosedView(self.game_display)
         elif dt_event == DTEvent.SHOW_INVENTORY:
             return ShowInventoryView(self.game_display, **extra_args)
+        elif dt_event == DTEvent.SELECT_INVENTORY:
+            return ShowInventoryView(self.game_display, items=[
+                InventoryItems.FOOD,
+                InventoryItems.WARRIOR,
+                InventoryItems.BEAST,
+                InventoryItems.HEALER,
+                InventoryItems.SCOUT,
+                InventoryItems.SWORD,
+                InventoryItems.BRASS_KEY,
+                InventoryItems.SILVER_KEY,
+                InventoryItems.GOLD_KEY
+            ])
 
         raise ViewException('Cannot build view for event: %s', dt_event)
 
