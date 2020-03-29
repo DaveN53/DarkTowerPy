@@ -11,10 +11,10 @@ class EventManager:
 
     @staticmethod
     def start():
-        start_event = DTEvent.SELECT_BAZAAR
+        start_event = DTEvent.INTRO
         intro_event = pygame.event.Event(start_event, {})
         pygame.event.post(intro_event)
 
     @staticmethod
     def is_view_event(event: Event):
-        return event.type in list(map(int, DTEvent))
+        return event.type in list(map(int, DTEvent)) and event.type != DTEvent.DO_NOTHING

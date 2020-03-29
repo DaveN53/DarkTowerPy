@@ -4,6 +4,7 @@ from enum import IntEnum
 import os
 import pygame
 
+from darktower.constants.defaults import DEFAULT_FONT_SIZE, CLOCK_FONT
 from darktower.constants.dt_color import DTColor
 from darktower.enums import DTEvent, BazaarItems
 from darktower.dt_game_display import DTGameDisplay
@@ -16,33 +17,33 @@ class BazaarView(BaseView):
         super().__init__(game_display=game_display)
         self.yes_button = DTButton(
             game_display,
-            (0, (self.game_display.height/6)*4),
-            (self.game_display.width/2, self.game_display.height/6),
+            (0, (self.game_display.height/5)*3),
+            (self.game_display.width/2, self.game_display.height/5),
             action=self.set_selection,
             action_args=[BazaarSelection.YES],
             color=DTColor.BUTTON_GREEN,
             text='Yes')
         self.no_button = DTButton(
             game_display,
-            (self.game_display.width/2, (self.game_display.height/6)*4),
-            (self.game_display.width/2, self.game_display.height / 6),
+            (self.game_display.width/2, (self.game_display.height/5)*3),
+            (self.game_display.width/2, self.game_display.height / 5),
             action=self.set_selection,
             action_args=[BazaarSelection.NO],
             color=DTColor.BUTTON_NO_RED,
             text='No')
         self.haggle_button = DTButton(
             game_display,
-            (0, (self.game_display.height/6)*5),
-            (self.game_display.width/2, self.game_display.height / 6),
+            (0, (self.game_display.height/5)*4),
+            (self.game_display.width/2, self.game_display.height / 5),
             action=self.set_selection,
             action_args=[BazaarSelection.HAGGLE],
             color=DTColor.BUTTON_ORANGE,
             text='Haggle')
         self.exit_button = DTButton(
             game_display,
-            (self.game_display.width/2, (self.game_display.height/6)*5),
-            (self.game_display.width/2, self.game_display.height / 6),
-            action=self.exit,
+            (self.game_display.width/2, (self.game_display.height/5)*4),
+            (self.game_display.width/2, self.game_display.height / 5),
+            action=self.exit_bazaar,
             color=DTColor.BUTTON_BLUE,
             text='Exit')
 
@@ -60,10 +61,18 @@ class BazaarView(BaseView):
             if item_index > len(BAZAAR_ITEMS) - 1:
                 item_index = 0
             self.selected_item = BAZAAR_ITEMS[item_index]
+        elif selection == BazaarSelection.HAGGLE:
+            result = random.randrange(0, 100)
+            if result < 50:
+                new_price = self.items[self.selected_item] - 1
+                self.items[self.selected_item] = max(new_price, 1)
+            else:
+                self.exit_bazaar(DTEvent.BAZAAR_CLOSED)
 
-    def exit(self):
-        intro_event = pygame.event.Event(DTEvent.SHOW_INVENTORY, {'item': self.item})
-        pygame.event.post(intro_event)
+    @staticmethod
+    def exit_bazaar(event=None):
+        exit_event = pygame.event.Event(event or DTEvent.SHOW_INVENTORY, {})
+        pygame.event.post(exit_event)
 
     def display(self):
         self.yes_button.draw()
@@ -73,7 +82,15 @@ class BazaarView(BaseView):
 
         bazaar_price = self.items[self.selected_item]
         bazaar_image = pygame.image.load(BAZAAR_IMAGES[self.selected_item])
-        self.game_display.game.blit(bazaar_image, (0, 0))
+        self.game_display.game.blit(bazaar_image, (10, 10))
+
+        bazaar_price_text = pygame.font.Font(
+            CLOCK_FONT, 45).render(
+            f'{bazaar_price}', True, DTColor.BUTTON_NO_RED)
+
+        text_rect = bazaar_price_text.get_rect()
+        text_rect.center = ((self.game_display.width / 4)*3, self.game_display.height / 4)
+        self.game_display.game.blit(bazaar_price_text, text_rect)
 
     @staticmethod
     def get_bazaar_items():

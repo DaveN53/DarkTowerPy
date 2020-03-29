@@ -20,6 +20,8 @@ class DTEvent(IntEnum):
     SELECT_FRONTIER = dt_event_num(9)
     SELECT_INVENTORY = dt_event_num(10)
     SHOW_INVENTORY = dt_event_num(11)
+    BAZAAR_CLOSED = dt_event_num(12)
+    DO_NOTHING = dt_event_num(99)
 
 
 class BazaarItems(IntEnum):

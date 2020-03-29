@@ -23,13 +23,11 @@ class AudioPlayer(object):
         if event.type == DTEvent.INTRO:
             self.play_wave(AudioFile.INTRO, DTEvent.SELECT_DIFFICULTY)
         elif event.type == DTEvent.SELECT_BAZAAR:
-            self.play_wave(AudioFile.BAZAAR, None)
+            self.play_wave(AudioFile.BAZAAR, DTEvent.DO_NOTHING)
 
     @staticmethod
-    def play_wave(audio_file: str, end_event: DTEvent =None):
-        if end_event:
-            pygame.mixer.music.set_endevent(end_event)
-
+    def play_wave(audio_file: str, end_event):
+        pygame.mixer.music.set_endevent(end_event)
         pygame.mixer.music.load(audio_file)
         pygame.mixer.music.play()
 
