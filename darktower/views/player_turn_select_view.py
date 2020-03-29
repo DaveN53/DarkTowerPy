@@ -2,7 +2,7 @@ import pygame
 
 from darktower.constants.defaults import DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR, CLOCK_FONT
 from darktower.constants.dt_color import DTColor
-from darktower.enums import DTEvent
+from darktower.enums import DTEvent, DTUserEvent
 from darktower.dt_game_display import DTGameDisplay
 from darktower.views.base_view import BaseView
 from darktower.widgets.dt_button import DTButton
@@ -11,6 +11,9 @@ from darktower.widgets.dt_button import DTButton
 class PlayerTurnSelectView(BaseView):
     def __init__(self, game_display: DTGameDisplay):
         super().__init__(game_display=game_display)
+
+        self.game_display = game_display
+
         self.bazaar_button = DTButton(
             game_display,
             (self.game_display.width/3, self.game_display.height/4),
@@ -77,12 +80,17 @@ class PlayerTurnSelectView(BaseView):
 
         self.player_text = pygame.font.Font(
             CLOCK_FONT, DEFAULT_FONT_SIZE).render(
-            f'P{game_display.current_player + 1}', True, DTColor.BUTTON_NO_RED)
+            f'P{self.game_display.current_player + 1}', True, DTColor.BUTTON_NO_RED)
 
     @staticmethod
     def make_selection(event: DTEvent):
-        intro_event = pygame.event.Event(event)
-        pygame.event.post(intro_event)
+        selection_event = pygame.event.Event(DTUserEvent.DT_SELECTION, {'dt_event': event})
+        pygame.event.post(selection_event)
+
+    def refresh(self):
+        self.player_text = pygame.font.Font(
+            CLOCK_FONT, DEFAULT_FONT_SIZE).render(
+            f'P{self.game_display.current_player + 1}', True, DTColor.BUTTON_NO_RED)
 
     def display(self):
         self.bazaar_button.draw()

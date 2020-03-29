@@ -1,7 +1,7 @@
 import os
 
 from darktower.constants.dt_color import DTColor
-from darktower.views.base_view import FONTS
+from darktower.enums import FONTS
 
 DEFAULT_FONT = os.path.join(FONTS, 'Roboto-Regular.ttf')
 CLOCK_FONT = os.path.join(FONTS, 'alarm clock.ttf')

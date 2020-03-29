@@ -1,12 +1,6 @@
 from abc import ABC
 
-import os
-
 from darktower.dt_game_display import DTGameDisplay
-
-RESOURCES = os.path.join(os.path.dirname(__file__), 'resources')
-FONTS = os.path.join(RESOURCES, 'font')
-IMAGES = os.path.join(RESOURCES, 'images')
 
 
 class BaseView(ABC):
@@ -20,5 +14,5 @@ class BaseView(ABC):
     def play_audio(self):
         pass
 
-    def refresh(self):
+    def refresh(self, **extra_refresh_args):
         pass

@@ -1,10 +1,12 @@
 from darktower.enums import DTEvent
 from darktower.dt_game_display import DTGameDisplay
+from darktower.views.bazaar_closed_view import BazaarClosedView
 from darktower.views.bazaar_view import BazaarView
 from darktower.views.intro_view import IntroView
 from darktower.views.player_turn_select_view import PlayerTurnSelectView
 from darktower.views.select_difficulty_view import SelectDifficultyView
 from darktower.views.select_players_view import SelectPlayersView
+from darktower.views.show_inventory_view import ShowInventoryView
 
 
 class ViewFactory:
@@ -12,7 +14,7 @@ class ViewFactory:
     def __init__(self, game_display: DTGameDisplay):
         self.game_display = game_display
 
-    def build_view(self, dt_event: DTEvent):
+    def build_view(self, dt_event: DTEvent, **extra_args):
         if dt_event == DTEvent.INTRO:
             return IntroView(self.game_display)
         elif dt_event == DTEvent.SELECT_DIFFICULTY:
@@ -23,6 +25,10 @@ class ViewFactory:
             return PlayerTurnSelectView(self.game_display)
         elif dt_event == DTEvent.SELECT_BAZAAR:
             return BazaarView(self.game_display)
+        elif dt_event == DTEvent.BAZAAR_CLOSED:
+            return BazaarClosedView(self.game_display)
+        elif dt_event == DTEvent.SHOW_INVENTORY:
+            return ShowInventoryView(self.game_display, **extra_args)
 
         raise ViewException('Cannot build view for event: %s', dt_event)
 

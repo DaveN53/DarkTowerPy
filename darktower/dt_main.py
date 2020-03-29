@@ -11,8 +11,8 @@ class DTMain(object):
     def __init__(self):
         self.dt_game_display = DTGameDisplay()
         self.view_manager = ViewManager(self.dt_game_display)
-        self.event_manager = EventManager()
         self.audio_player = AudioPlayer()
+        self.event_manager = EventManager(self.dt_game_display, self.view_manager, self.audio_player)
         self.clock = pygame.time.Clock()
 
     def run_game(self):
@@ -25,10 +25,9 @@ class DTMain(object):
             event = pygame.event.poll()
             if event.type == pygame.QUIT:
                 break
+
             self.dt_game_display.current_event = event
-            if self.event_manager.is_view_event(event):
-                self.view_manager.update(event)
-                self.audio_player.trigger_audio(event)
+            self.event_manager.consume_event(event)
 
             self.dt_game_display.game.fill((0, 0, 0))
             self.view_manager.display()

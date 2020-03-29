@@ -3,7 +3,8 @@ import os
 import pygame
 
 from darktower.dt_game_display import DTGameDisplay
-from darktower.views.base_view import BaseView, IMAGES
+from darktower.enums import IMAGES
+from darktower.views.base_view import BaseView
 
 
 class IntroView(BaseView):

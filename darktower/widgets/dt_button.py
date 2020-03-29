@@ -17,8 +17,8 @@ class DTButton:
         self.game_display = game_display
         self.x_pos = pos[0]
         self.y_pos = pos[1]
-        self.width = dimensions[0]
-        self.height = dimensions[1]
+        self.width = dimensions[0] - 1
+        self.height = dimensions[1] - 1
         self.button = (self.x_pos, self.y_pos, self.width, self.height)
         self.action = action
         self.action_args = action_args

@@ -1,7 +1,7 @@
 import pygame
 
 from darktower.constants.dt_color import DTColor
-from darktower.enums import DTEvent
+from darktower.enums import DTEvent, DTUserEvent
 from darktower.dt_game_display import DTGameDisplay
 from darktower.views.base_view import BaseView
 from darktower.widgets.dt_button import DTButton
@@ -37,9 +37,8 @@ class SelectDifficultyView(BaseView):
 
     def set_diff(self, diff: int):
         self.game_display.difficulty = diff
-
-        intro_event = pygame.event.Event(DTEvent.SELECT_PLAYERS, {})
-        pygame.event.post(intro_event)
+        diff_event = pygame.event.Event(DTUserEvent.DT_SELECTION, {'dt_event': DTEvent.SELECT_PLAYERS})
+        pygame.event.post(diff_event)
 
     def display(self):
         self.level_one_button.draw()
