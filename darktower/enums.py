@@ -56,6 +56,7 @@ class AudioFile:
     BAZAAR = os.path.join(SOUNDS, 'bazaar.wav')
     BAZAAR_CLOSED = os.path.join(SOUNDS, 'bazaar-closed.wav')
     BEEP = os.path.join(SOUNDS, 'beep.wav')
+    SANCTUART_CITADEL = os.path.join(SOUNDS, 'sanctuary.wav')
 
 
 INVENTORY_IMAGES = {

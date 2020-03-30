@@ -3,7 +3,7 @@ from darktower.enums import InventoryItems
 
 class Player:
     def __init__(self):
-        self.gold = 100
+        self.gold = 30
         self.frontier = 1
         self.items = {
             InventoryItems.WARRIOR: 10,

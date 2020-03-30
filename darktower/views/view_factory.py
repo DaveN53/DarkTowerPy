@@ -4,6 +4,7 @@ from darktower.views.bazaar_closed_view import BazaarClosedView
 from darktower.views.bazaar_view import BazaarView
 from darktower.views.intro_view import IntroView
 from darktower.views.player_turn_select_view import PlayerTurnSelectView
+from darktower.views.sanctuary_citadel_view import SanctuaryCitadelView
 from darktower.views.select_difficulty_view import SelectDifficultyView
 from darktower.views.select_players_view import SelectPlayersView
 from darktower.views.show_inventory_view import ShowInventoryView
@@ -41,6 +42,8 @@ class ViewFactory:
                 InventoryItems.SILVER_KEY,
                 InventoryItems.GOLD_KEY
             ])
+        elif dt_event == DTEvent.SELECT_SANCTUARY_CITADEL:
+            return SanctuaryCitadelView(self.game_display)
 
         raise ViewException('Cannot build view for event: %s', dt_event)
 

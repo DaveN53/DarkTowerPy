@@ -45,9 +45,17 @@ class DTGameDisplay:
     def current_gold(self):
         return self.c_player.gold
 
+    @current_gold.setter
+    def current_gold(self, gold):
+        self.c_player.gold = gold
+
     @property
     def current_items(self):
         return self.c_player.items
+
+    @current_items.setter
+    def current_items(self, item, value):
+        self.c_player.items[item] = value
 
     def attempt_purchase(self, price: int, item: InventoryItems, item_count: int):
         player = self.players[self.current_player]
