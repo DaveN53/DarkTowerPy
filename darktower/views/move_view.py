@@ -11,20 +11,23 @@ class MoveView(BaseView):
     def __init__(self, game_display: DTGameDisplay, **extra_args):
         super().__init__(game_display=game_display)
         self.cool_down = 3000
-        self.last = pygame.time.get_ticks()
+        self.last_beep = self.last = pygame.time.get_ticks()
         self.event = self.get_move_event()
 
     def refresh(self, **extra_refresh_args):
-        self.last = pygame.time.get_ticks()
+        self.last_beep = self.last = pygame.time.get_ticks()
         self.event = self.get_move_event()
 
     def display(self):
         if self.event in (MoveEvent.DRAGON, MoveEvent.DRAGON_KILL):
             self.display_dragon_event()
+        elif self.event in (MoveEvent.LOST, MoveEvent.LOST_SCOUT):
+            self.display_lost()
 
     def display_dragon_event(self):
         now = pygame.time.get_ticks()
         if ((now - self.last) > 1200) and self.event == MoveEvent.DRAGON_KILL:
+            # TODO don't load for every frame
             dragon_image = pygame.image.load(EVENT_IMAGES[self.event])
             event_time = 5000
         else:
@@ -36,6 +39,26 @@ class MoveView(BaseView):
             selection_event = pygame.event.Event(DTUserEvent.DT_SELECTION, {
                 'dt_event': DTEvent.SHOW_INVENTORY,
                 'items': [InventoryItems.WARRIOR]})
+            pygame.event.post(selection_event)
+
+    def display_lost(self):
+        now = pygame.time.get_ticks()
+        if ((now - self.last) > 3000) and self.event == MoveEvent.LOST_SCOUT:
+            # TODO only create once
+            lost_image = pygame.image.load(EVENT_IMAGES[self.event])
+            selection_event = pygame.event.Event(DTUserEvent.DT_SELECTION, {'dt_event': DTEvent.START_PLAYER_TURN})
+            event_time = 5000
+            if (now - self.last_beep) > 3000:
+                self.play_beep()
+                self.last_beep = pygame.time.get_ticks()
+
+        else:
+            lost_image = pygame.image.load(EVENT_IMAGES[MoveEvent.LOST])
+            selection_event = pygame.event.Event(DTUserEvent.DT_SELECTION, {'dt_event': DTEvent.END_TURN})
+            event_time = 3250
+        self.display_event(lost_image)
+
+        if (now - self.last) > event_time:
             pygame.event.post(selection_event)
 
     def display_event(self, image):
@@ -68,11 +91,15 @@ class MoveView(BaseView):
 
 
         # TODO REMOVE
-        event = MoveEvent.DRAGON
+        event = MoveEvent.LOST_SCOUT
 
 
         self.play_event_audio(event)
         return event
+
+    def play_beep(self):
+        exit_event = pygame.event.Event(DTUserEvent.PLAY_AUDIO, {'audio': AudioFile.BEEP})
+        pygame.event.post(exit_event)
 
     @staticmethod
     def play_event_audio(event: MoveEvent):

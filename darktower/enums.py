@@ -90,5 +90,7 @@ INVENTORY_IMAGES = {
 
 EVENT_IMAGES = {
     MoveEvent.DRAGON: os.path.join(IMAGES, 'dragon.jpg'),
-    MoveEvent.DRAGON_KILL: os.path.join(IMAGES, 'sword.jpg')
+    MoveEvent.DRAGON_KILL: os.path.join(IMAGES, 'sword.jpg'),
+    MoveEvent.LOST: os.path.join(IMAGES, 'lost.jpg'),
+    MoveEvent.LOST_SCOUT: os.path.join(IMAGES, 'scout.jpg'),
 }
