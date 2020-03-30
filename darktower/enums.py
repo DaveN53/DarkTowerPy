@@ -57,6 +57,22 @@ class AudioFile:
     BAZAAR_CLOSED = os.path.join(SOUNDS, 'bazaar-closed.wav')
     BEEP = os.path.join(SOUNDS, 'beep.wav')
     SANCTUART_CITADEL = os.path.join(SOUNDS, 'sanctuary.wav')
+    DRAGON = os.path.join(SOUNDS, 'dragon.wav')
+    DRAGON_KILL = os.path.join(SOUNDS, 'dragon-kill.wav')
+    LOST = os.path.join(SOUNDS, 'lost.wav')
+    PLAGUE = os.path.join(SOUNDS, 'plague.wav')
+    BATTLE = os.path.join(SOUNDS, 'battle.wav')
+
+
+class MoveEvent:
+    SAFE = 0
+    LOST = 1
+    PLAGUE = 2
+    DRAGON = 3
+    BATTLE = 4
+    DRAGON_KILL = 5
+    LOST_SCOUT = 6
+    PLAGUE_HEALER = 7
 
 
 INVENTORY_IMAGES = {

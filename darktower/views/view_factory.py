@@ -3,6 +3,7 @@ from darktower.dt_game_display import DTGameDisplay
 from darktower.views.bazaar_closed_view import BazaarClosedView
 from darktower.views.bazaar_view import BazaarView
 from darktower.views.intro_view import IntroView
+from darktower.views.move_view import MoveView
 from darktower.views.player_turn_select_view import PlayerTurnSelectView
 from darktower.views.sanctuary_citadel_view import SanctuaryCitadelView
 from darktower.views.select_difficulty_view import SelectDifficultyView
@@ -44,6 +45,8 @@ class ViewFactory:
             ])
         elif dt_event == DTEvent.SELECT_SANCTUARY_CITADEL:
             return SanctuaryCitadelView(self.game_display)
+        elif dt_event == DTEvent.SELECT_MOVE:
+            return MoveView(self.game_display)
 
         raise ViewException('Cannot build view for event: %s', dt_event)
 
