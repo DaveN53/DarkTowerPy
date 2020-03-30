@@ -3,7 +3,7 @@ import random
 import pygame
 
 from darktower.dt_game_display import DTGameDisplay
-from darktower.enums import DTUserEvent, AudioFile, MoveEvent, InventoryItems
+from darktower.enums import DTUserEvent, AudioFile, MoveEvent, InventoryItems, EVENT_IMAGES, DTEvent
 from darktower.views.base_view import BaseView
 
 
@@ -19,7 +19,30 @@ class MoveView(BaseView):
         self.event = self.get_move_event()
 
     def display(self):
+        if self.event in (MoveEvent.DRAGON, MoveEvent.DRAGON_KILL):
+            self.display_dragon_event()
+
+    def display_dragon_event(self):
         now = pygame.time.get_ticks()
+        if ((now - self.last) > 1200) and self.event == MoveEvent.DRAGON_KILL:
+            dragon_image = pygame.image.load(EVENT_IMAGES[self.event])
+            event_time = 5000
+        else:
+            dragon_image = pygame.image.load(EVENT_IMAGES[MoveEvent.DRAGON])
+            event_time = 3000
+        self.display_event(dragon_image)
+
+        if (now - self.last) > event_time:
+            selection_event = pygame.event.Event(DTUserEvent.DT_SELECTION, {
+                'dt_event': DTEvent.SHOW_INVENTORY,
+                'items': [InventoryItems.WARRIOR]})
+            pygame.event.post(selection_event)
+
+    def display_event(self, image):
+        width, height = image.get_rect().size
+        x_pos = (self.game_display.width - width) / 2
+        y_pos = (self.game_display.height - height) / 2
+        self.game_display.game.blit(image, (x_pos, y_pos))
 
     def get_move_event(self):
         rand = random.randrange(0, 100)
@@ -42,6 +65,11 @@ class MoveView(BaseView):
                 event = MoveEvent.PLAGUE
         elif rand < 60:
             event = MoveEvent.BATTLE
+
+
+        # TODO REMOVE
+        event = MoveEvent.DRAGON
+
 
         self.play_event_audio(event)
         return event

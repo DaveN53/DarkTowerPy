@@ -86,5 +86,9 @@ INVENTORY_IMAGES = {
     InventoryItems.SILVER_KEY: os.path.join(IMAGES, 'silverkey.jpg'),
     InventoryItems.GOLD_KEY: os.path.join(IMAGES, 'goldkey.jpg'),
     InventoryItems.GOLD: os.path.join(IMAGES, 'gold.jpg')
+}
 
+EVENT_IMAGES = {
+    MoveEvent.DRAGON: os.path.join(IMAGES, 'dragon.jpg'),
+    MoveEvent.DRAGON_KILL: os.path.join(IMAGES, 'sword.jpg')
 }
