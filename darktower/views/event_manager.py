@@ -37,6 +37,7 @@ class EventManager:
         raise EventException('Unknown event: %s', event)
 
     def consume_dt_selection_event(self, event: Event):
+        print('Consuming Event: %s', event)
         dt_event = self.get_dt_event(event)
 
         if dt_event == DTEvent.BAZAAR_PURCHASE:

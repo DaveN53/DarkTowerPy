@@ -35,6 +35,7 @@ class DTEvent(IntEnum):
     BAZAAR_CLOSED = 12
     END_TURN = 13
     BAZAAR_PURCHASE = 14
+    BATTLE = 15
     DO_NOTHING = 99
 
 
@@ -49,6 +50,8 @@ class InventoryItems(IntEnum):
     SILVER_KEY = 7
     GOLD_KEY = 8
     GOLD = 9
+    PEGASUS = 10
+    WIZARD = 11
 
 
 class AudioFile:
@@ -56,12 +59,14 @@ class AudioFile:
     BAZAAR = os.path.join(SOUNDS, 'bazaar.wav')
     BAZAAR_CLOSED = os.path.join(SOUNDS, 'bazaar-closed.wav')
     BEEP = os.path.join(SOUNDS, 'beep.wav')
-    SANCTUART_CITADEL = os.path.join(SOUNDS, 'sanctuary.wav')
+    SANCTUARY_CITADEL = os.path.join(SOUNDS, 'sanctuary.wav')
     DRAGON = os.path.join(SOUNDS, 'dragon.wav')
     DRAGON_KILL = os.path.join(SOUNDS, 'dragon-kill.wav')
     LOST = os.path.join(SOUNDS, 'lost.wav')
     PLAGUE = os.path.join(SOUNDS, 'plague.wav')
     BATTLE = os.path.join(SOUNDS, 'battle.wav')
+    BATTLE_ROUND_WON = os.path.join(SOUNDS, 'enemy-hit.wav')
+    BATTLE_ROUND_LOST = os.path.join(SOUNDS, 'player-hit.wav')
 
 
 class MoveEvent:
@@ -93,4 +98,6 @@ EVENT_IMAGES = {
     MoveEvent.DRAGON_KILL: os.path.join(IMAGES, 'sword.jpg'),
     MoveEvent.LOST: os.path.join(IMAGES, 'lost.jpg'),
     MoveEvent.LOST_SCOUT: os.path.join(IMAGES, 'scout.jpg'),
+    MoveEvent.PLAGUE: os.path.join(IMAGES, 'plague.jpg'),
+    MoveEvent.PLAGUE_HEALER: os.path.join(IMAGES, 'healer.jpg')
 }

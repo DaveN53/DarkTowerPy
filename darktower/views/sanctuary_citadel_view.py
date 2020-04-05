@@ -15,7 +15,7 @@ class SanctuaryCitadelView(BaseView):
         self.show_rewards = True
 
         self.awarded_items = self.calculate_need()
-        exit_event = pygame.event.Event(DTUserEvent.PLAY_AUDIO, {'audio': AudioFile.SANCTUART_CITADEL})
+        exit_event = pygame.event.Event(DTUserEvent.PLAY_AUDIO, {'audio': AudioFile.SANCTUARY_CITADEL})
         pygame.event.post(exit_event)
 
     def refresh(self, **extra_refresh_args):
@@ -23,7 +23,7 @@ class SanctuaryCitadelView(BaseView):
         self.show_rewards = True
 
         self.awarded_items = self.calculate_need()
-        exit_event = pygame.event.Event(DTUserEvent.PLAY_AUDIO, {'audio': AudioFile.SANCTUART_CITADEL})
+        exit_event = pygame.event.Event(DTUserEvent.PLAY_AUDIO, {'audio': AudioFile.SANCTUARY_CITADEL})
         pygame.event.post(exit_event)
 
     def display(self):

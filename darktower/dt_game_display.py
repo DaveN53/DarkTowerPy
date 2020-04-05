@@ -15,6 +15,7 @@ class DTGameDisplay:
         self.difficulty = None
         self.players = []
         self.c_player: Player = None
+        self.dragon = {InventoryItems.WARRIOR: 0, InventoryItems.GOLD: 0}
 
     @property
     def num_players(self):
@@ -43,19 +44,35 @@ class DTGameDisplay:
 
     @property
     def current_gold(self):
-        return self.c_player.gold
+        return self.current_items[InventoryItems.GOLD]
 
     @current_gold.setter
     def current_gold(self, gold):
-        self.c_player.gold = gold
+        self.current_items[InventoryItems.GOLD] = gold
+
+    @property
+    def current_warriors(self):
+        return self.current_items[InventoryItems.WARRIOR]
+
+    @current_warriors.setter
+    def current_warriors(self, warriors):
+        warriors = max(1, warriors)
+        self.current_items[InventoryItems.WARRIOR] = warriors
 
     @property
     def current_items(self):
         return self.c_player.items
 
-    @current_items.setter
-    def current_items(self, item, value):
-        self.c_player.items[item] = value
+    def attempt_award_key(self):
+        if not self.current_items[InventoryItems.BRASS_KEY] and self.c_player.frontier == 2:
+            self.current_items[InventoryItems.BRASS_KEY] = True
+            return InventoryItems.BRASS_KEY
+        elif not self.current_items[InventoryItems.SILVER_KEY] and self.c_player.frontier == 3:
+            self.current_items[InventoryItems.SILVER_KEY] = True
+            return InventoryItems.SILVER_KEY
+        elif not self.current_items[InventoryItems.GOLD_KEY] and self.c_player.frontier == 4:
+            self.current_items[InventoryItems.GOLD_KEY] = True
+            return InventoryItems.GOLD_KEY
 
     def attempt_purchase(self, price: int, item: InventoryItems, item_count: int):
         player = self.players[self.current_player]

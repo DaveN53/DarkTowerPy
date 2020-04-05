@@ -43,7 +43,7 @@ class ShowInventoryView(BaseView):
             pygame.event.post(exit_event)
 
     def display_item(self, image, text):
-        self.game_display.game.blit(image, (0, 0))
+        self.game_display.game.blit(image, (10, 10))
 
         bazaar_price_text = pygame.font.Font(
             CLOCK_FONT, 45).render(
