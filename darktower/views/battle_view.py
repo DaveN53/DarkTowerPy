@@ -72,7 +72,7 @@ class BattleView(BaseView):
                 self.next_round()
 
             self.play_outcome_audio(now)
-        elif now < (self.round_time + (self.cool_down * 3.5)):
+        elif now < (self.round_time + (self.cool_down * 3.25)):
             self.next_round()
 
     def show_brigands(self):
@@ -102,8 +102,8 @@ class BattleView(BaseView):
         outcome = random.randrange(0, 100)
         # Give player advantage when their numbers are greater
         diff = min(1, self.game_display.current_warriors - self.brigands)
-        outcome -= min(15, int(diff * (diff / 3)))
-        if outcome <= 60:
+        outcome -= min(35, int(pow(diff, (diff/5)).real))
+        if outcome <= 55:
             self.brigands = floor(self.brigands / 2)
             if self.brigands <= 0:
                 self.round_outcome = BattleEvent.PLAYER_WON_BATTLE
@@ -150,6 +150,10 @@ class BattleView(BaseView):
         self.last_sound = pygame.time.get_ticks()
 
     def config_battle(self):
+        self.round_time = 0
+        self.last_sound = 0
+        self.new_round = True
+        self.round_outcome = None
         self.cancel = False
         self.battle_start = True
         self.rewards = []
