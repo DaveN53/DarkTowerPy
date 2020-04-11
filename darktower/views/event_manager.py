@@ -55,6 +55,7 @@ class EventManager:
             self.view_manager.update(dt_event, items=items)
         elif dt_event == DTEvent.SELECT_INVENTORY:
             self.view_manager.update(dt_event, items=[
+                InventoryItems.GOLD,
                 InventoryItems.FOOD,
                 InventoryItems.WARRIOR,
                 InventoryItems.BEAST,

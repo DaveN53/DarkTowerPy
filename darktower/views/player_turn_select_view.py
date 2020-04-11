@@ -2,7 +2,7 @@ import pygame
 
 from darktower.constants.defaults import DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR, CLOCK_FONT
 from darktower.constants.dt_color import DTColor
-from darktower.enums import DTEvent, DTUserEvent
+from darktower.enums import DTEvent, DTUserEvent, AudioFile
 from darktower.dt_game_display import DTGameDisplay
 from darktower.views.base_view import BaseView
 from darktower.widgets.dt_button import DTButton
@@ -13,7 +13,7 @@ class PlayerTurnSelectView(BaseView):
         super().__init__(game_display=game_display)
 
         self.game_display = game_display
-
+        self.beeped = False
         self.bazaar_button = DTButton(
             game_display,
             (self.game_display.width/3, self.game_display.height/4),
@@ -88,11 +88,13 @@ class PlayerTurnSelectView(BaseView):
         pygame.event.post(selection_event)
 
     def refresh(self):
+        self.beeped = False
         self.player_text = pygame.font.Font(
             CLOCK_FONT, DEFAULT_FONT_SIZE).render(
             f'P{self.game_display.current_player + 1}', True, DTColor.BUTTON_NO_RED)
 
     def display(self):
+        self.play_beep()
         self.bazaar_button.draw()
         self.tomb_ruin_button.draw()
         self.move_button.draw()
@@ -104,3 +106,9 @@ class PlayerTurnSelectView(BaseView):
         text_rect = self.player_text.get_rect()
         text_rect.center = (self.game_display.width/2, self.game_display.height/8)
         self.game_display.game.blit(self.player_text, text_rect)
+
+    def play_beep(self):
+        if not self.beeped:
+            exit_event = pygame.event.Event(DTUserEvent.PLAY_AUDIO, {'audio': AudioFile.BEEP})
+            pygame.event.post(exit_event)
+            self.beeped = True

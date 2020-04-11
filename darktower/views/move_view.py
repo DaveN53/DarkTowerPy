@@ -101,12 +101,12 @@ class MoveView(BaseView):
                 self.game_display.current_items[InventoryItems.SWORD] = False
             else:
                 event = MoveEvent.DRAGON
-        elif rand < 15:
+        elif rand < 12:
             if self.game_display.current_items[InventoryItems.SCOUT]:
                 event = MoveEvent.LOST_SCOUT
             else:
                 event = MoveEvent.LOST
-        elif rand < 30:
+        elif rand < 36:
             if self.game_display.current_items[InventoryItems.HEALER]:
                 event = MoveEvent.PLAGUE_HEALER
             else:
@@ -116,16 +116,12 @@ class MoveView(BaseView):
 
         print(f'rand: {rand}, event: {event}')
 
-
-        # TODO REMOVE
-        event = MoveEvent.BATTLE
-
         self.play_event_audio(event)
         return event
 
     def configure_event(self):
         if self.event == MoveEvent.SAFE:
-            self.event_time = 2000
+            self.event_time = 0
             self.selection_event = pygame.event.Event(DTUserEvent.DT_SELECTION, {'dt_event': DTEvent.END_TURN})
         elif self.event == MoveEvent.DRAGON:
             stolen_warriors = ceil(self.game_display.current_warriors / 4)
@@ -187,7 +183,7 @@ class MoveView(BaseView):
         elif event == MoveEvent.BATTLE:
             audio = AudioFile.BATTLE
         elif event == MoveEvent.SAFE:
-            audio = AudioFile.BEEP
+            return
 
         audio_event = pygame.event.Event(DTUserEvent.PLAY_AUDIO, {'audio': audio})
         pygame.event.post(audio_event)

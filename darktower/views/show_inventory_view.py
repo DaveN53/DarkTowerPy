@@ -33,11 +33,6 @@ class ShowInventoryView(BaseView):
             image = pygame.image.load(image_path)
             self.display_item(image, text)
             self.play_beep(now)
-        elif now - self.last <= (self.cool_down * (len(self.items) + 1)):
-            image = self.gold_image
-            text = self.game_display.current_gold
-            self.display_item(image, text)
-            self.play_beep(now)
         else:
             exit_event = pygame.event.Event(DTUserEvent.DT_SELECTION, {'dt_event': DTEvent.END_TURN})
             pygame.event.post(exit_event)
@@ -52,7 +47,6 @@ class ShowInventoryView(BaseView):
         text_rect = bazaar_price_text.get_rect()
         text_rect.center = ((self.game_display.width / 4) * 3, self.game_display.height / 4)
         self.game_display.game.blit(bazaar_price_text, text_rect)
-
 
     def setup_display(self):
         self.last = pygame.time.get_ticks()
@@ -73,8 +67,6 @@ class ShowInventoryView(BaseView):
             }
         self.items = final_items
         print(f'Final Items: {self.items}')
-
-        self.gold_image = pygame.image.load(os.path.join(IMAGES, 'gold.jpg'))
 
     def play_beep(self, now):
         if now - self.last_beep > self.cool_down:

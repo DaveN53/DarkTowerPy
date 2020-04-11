@@ -4,6 +4,7 @@ from math import floor
 
 import pygame
 
+from darktower import utilities
 from darktower.constants.defaults import CLOCK_FONT
 from darktower.constants.dt_color import DTColor
 from darktower.dt_game_display import DTGameDisplay
@@ -27,6 +28,7 @@ class BattleView(BaseView):
         self.round_outcome = None
         self.cancel = False
         self.battle_start = True
+        self.battle_end = False
         self.config_battle()
 
         self.cancel_button = DTButton(
@@ -42,12 +44,16 @@ class BattleView(BaseView):
         self.config_battle()
 
     def display(self):
+        if self.battle_end:
+            return
+
         now = pygame.time.get_ticks()
         if self.new_round and self.cancel:
             self.finish_battle()
             return
 
         if self.battle_start:
+            #if now > (self.round_time + 1500):
             self.show_brigands()
             self.play_beep(now)
             if now > (self.round_time + self.cool_down):
@@ -123,6 +129,7 @@ class BattleView(BaseView):
         if self.round_outcome in (BattleEvent.BRIGAND_WON_BATTLE, BattleEvent.PLAYER_WON_BATTLE):
             self.cancel = True
             self.finish_battle()
+            self.battle_end = True
             return
 
         self.new_round = True
@@ -156,6 +163,7 @@ class BattleView(BaseView):
         self.round_outcome = None
         self.cancel = False
         self.battle_start = True
+        self.battle_end = False
         self.rewards = []
         self.round_time = pygame.time.get_ticks()
         self.brigands = random.randrange(
@@ -164,23 +172,7 @@ class BattleView(BaseView):
         )
 
     def decide_winnings(self):
-        rewarded_gold = random.randrange(0, 20)
-        if rewarded_gold > 0:
-            self.game_display.current_gold += rewarded_gold
-        random_item = random.randrange(0, 100)
-        if random_item <= 10:
-            self.game_display.current_items[InventoryItems.WIZARD] = True
-            self.rewards.append(InventoryItems.WIZARD)
-        elif random_item <= 20:
-            self.game_display.current_items[InventoryItems.PEGASUS] = True
-            self.rewards.append(InventoryItems.PEGASUS)
-        elif random_item <= 30:
-            self.game_display.current_items[InventoryItems.SWORD] = True
-            self.rewards.append(InventoryItems.SWORD)
-        elif random_item <= 60:
-            key = self.game_display.attempt_award_key()
-            if key:
-                self.rewards.append(key)
+        self.rewards = utilities.decide_winnings(self.game_display, odds=1.5)
 
     def cancel_battle(self):
         self.cancel = True
@@ -190,10 +182,10 @@ class BattleView(BaseView):
             print(f'Rewards:\n{self.rewards}')
             self.rewards.append(InventoryItems.WARRIOR)
             end_event = pygame.event.Event(DTUserEvent.DT_SELECTION, {'dt_event': DTEvent.SHOW_INVENTORY,
-                                                                         'items': self.rewards})
+                                                                      'items': self.rewards})
         else:
             end_event = pygame.event.Event(DTUserEvent.DT_SELECTION, {'dt_event': DTEvent.SHOW_INVENTORY,
-                                                                     'items': [InventoryItems.WARRIOR]})
+                                                                      'items': [InventoryItems.WARRIOR]})
         pygame.event.post(end_event)
 
 

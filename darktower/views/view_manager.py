@@ -21,8 +21,13 @@ class ViewManager:
 
         if dt_event == DTEvent.END_TURN:
             self.dt_event = DTEvent.START_PLAYER_TURN
+        elif dt_event in (DTEvent.TOMB, DTEvent.TOMB_BATTLE, DTEvent.TOMB_NOTHING):
+            self.dt_event = DTEvent.SELECT_TOMB_RUIN
 
         self.current_view = self.views.get(self.dt_event)
+
+        if dt_event in (DTEvent.TOMB, DTEvent.TOMB_BATTLE, DTEvent.TOMB_NOTHING):
+            return
 
         if self.current_view:
             self.current_view.refresh(**extra_args)

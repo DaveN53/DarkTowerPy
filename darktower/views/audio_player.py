@@ -17,7 +17,15 @@ class AudioPlayer(object):
             self.audio_end_event = DTEvent.DO_NOTHING
         elif event == DTEvent.BAZAAR_CLOSED:
             self.play_wave(AudioFile.BAZAAR_CLOSED)
-            self.audio_end_event = DTEvent.START_PLAYER_TURN
+            self.audio_end_event = DTEvent.END_TURN
+        elif event == DTEvent.TOMB_NOTHING:
+            self.play_wave(AudioFile.TOMB_NOTHING)
+            self.audio_end_event = DTEvent.END_TURN
+        elif event == DTEvent.TOMB_BATTLE:
+            self.play_wave(AudioFile.TOMB_BATTLE)
+            self.audio_end_event = DTEvent.BATTLE
+        elif event == DTEvent.TOMB:
+            self.play_wave(AudioFile.TOMB)
 
     @staticmethod
     def play_wave(audio_file: str):

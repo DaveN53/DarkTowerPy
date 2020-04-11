@@ -40,6 +40,7 @@ class SanctuaryCitadelView(BaseView):
         if self.game_display.current_gold <= 7:
             gold_min = 7 - self.game_display.current_gold
             self.game_display.current_gold += random.randrange(gold_min, 10)
+            awarded_items.append(InventoryItems.GOLD)
         if self.game_display.current_items[InventoryItems.FOOD] <= 5:
             food_min = 5 - self.game_display.current_items[InventoryItems.FOOD]
             self.game_display.current_items[InventoryItems.FOOD] += random.randrange(food_min, 6)
@@ -48,4 +49,5 @@ class SanctuaryCitadelView(BaseView):
             warrior_min = 4 - self.game_display.current_items[InventoryItems.WARRIOR]
             self.game_display.current_items[InventoryItems.WARRIOR] += random.randrange(warrior_min, 4)
             awarded_items.append(InventoryItems.WARRIOR)
+        awarded_items = [InventoryItems.GOLD, InventoryItems.FOOD, InventoryItems.WARRIOR]
         return awarded_items

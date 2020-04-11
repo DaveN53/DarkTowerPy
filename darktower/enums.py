@@ -36,6 +36,9 @@ class DTEvent(IntEnum):
     END_TURN = 13
     BAZAAR_PURCHASE = 14
     BATTLE = 15
+    TOMB_NOTHING = 16
+    TOMB_BATTLE = 17
+    TOMB = 18
     DO_NOTHING = 99
 
 
@@ -67,6 +70,9 @@ class AudioFile:
     BATTLE = os.path.join(SOUNDS, 'battle.wav')
     BATTLE_ROUND_WON = os.path.join(SOUNDS, 'enemy-hit.wav')
     BATTLE_ROUND_LOST = os.path.join(SOUNDS, 'player-hit.wav')
+    TOMB = os.path.join(SOUNDS, 'tomb.wav')
+    TOMB_BATTLE = os.path.join(SOUNDS, 'tomb-battle.wav')
+    TOMB_NOTHING = os.path.join(SOUNDS, 'tomb-nothing.wav')
 
 
 class MoveEvent:
@@ -90,7 +96,9 @@ INVENTORY_IMAGES = {
     InventoryItems.BRASS_KEY: os.path.join(IMAGES, 'brasskey.jpg'),
     InventoryItems.SILVER_KEY: os.path.join(IMAGES, 'silverkey.jpg'),
     InventoryItems.GOLD_KEY: os.path.join(IMAGES, 'goldkey.jpg'),
-    InventoryItems.GOLD: os.path.join(IMAGES, 'gold.jpg')
+    InventoryItems.GOLD: os.path.join(IMAGES, 'gold.jpg'),
+    InventoryItems.PEGASUS: os.path.join(IMAGES, 'pegasus.jpg'),
+    InventoryItems.WIZARD: os.path.join(IMAGES, 'wizard.jpg')
 }
 
 EVENT_IMAGES = {
