@@ -1,7 +1,11 @@
 import random
 
+import os
+
+import pygame
+
 from darktower.dt_game_display import DTGameDisplay
-from darktower.enums import InventoryItems
+from darktower.enums import InventoryItems, IMAGES
 
 
 def decide_winnings(game_display: DTGameDisplay, odds: float = 1.0):
@@ -26,3 +30,9 @@ def decide_winnings(game_display: DTGameDisplay, odds: float = 1.0):
             rewards.append(key)
 
     return rewards
+
+
+def load_image(filename: str):
+    image = pygame.image.load(os.path.join(IMAGES, filename)).convert()
+    scaled = [i * 2 for i in image.get_rect().size]
+    return pygame.transform.scale(image, scaled)

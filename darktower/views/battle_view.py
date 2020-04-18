@@ -1,4 +1,3 @@
-import os
 import random
 from math import floor
 
@@ -9,6 +8,7 @@ from darktower.constants.defaults import CLOCK_FONT
 from darktower.constants.dt_color import DTColor
 from darktower.dt_game_display import DTGameDisplay
 from darktower.enums import IMAGES, DTUserEvent, AudioFile, DTEvent, InventoryItems
+from darktower.utilities import load_image
 from darktower.views.base_view import BaseView
 from darktower.widgets.dt_button import DTButton
 
@@ -17,8 +17,8 @@ class BattleView(BaseView):
 
     def __init__(self, game_display: DTGameDisplay):
         super().__init__(game_display=game_display)
-        self.brigand_image = pygame.image.load(os.path.join(IMAGES, 'brigands.jpg'))
-        self.warrior_image = pygame.image.load(os.path.join(IMAGES, 'warriors.jpg'))
+        self.brigand_image = load_image('brigands.jpg')
+        self.warrior_image = load_image('warriors.jpg')
         self.brigands = 0
         self.rewards = []
         self.round_time = 0
@@ -38,7 +38,7 @@ class BattleView(BaseView):
             action=self.cancel_battle,
             color=DTColor.BUTTON_BLUE,
             text='Cancel',
-            font_size=20)
+            font_size=40)
 
     def refresh(self, **extra_refresh_args):
         self.config_battle()
@@ -67,10 +67,10 @@ class BattleView(BaseView):
         if now < (self.round_time + self.cool_down):
             self.play_beep(now)
             self.show_warriors()
-            self.cancel_button.draw()
+            self.cancel_button.draw(DTColor.BUTTON_BLUE_DIM if self.cancel else None)
         elif now < (self.round_time + (self.cool_down * 2)):
             self.show_brigands()
-            self.cancel_button.draw()
+            self.cancel_button.draw(DTColor.BUTTON_BLUE_DIM if self.cancel else None)
             self.play_beep(now)
         elif now < (self.round_time + (self.cool_down * 3)):
             if self.battle_start:
@@ -82,17 +82,17 @@ class BattleView(BaseView):
             self.next_round()
 
     def show_brigands(self):
-        self.game_display.game.blit(self.brigand_image, (10, 10))
+        self.game_display.game.blit(self.brigand_image, (20, 20))
         self.show_text(self.brigands)
 
     def show_warriors(self):
-        self.game_display.game.blit(self.warrior_image, (10, 10))
+        self.game_display.game.blit(self.warrior_image, (20, 20))
         self.show_text(self.game_display.current_warriors)
 
     def show_text(self, text):
         bazaar_price_text = pygame.font.Font(
-            CLOCK_FONT, 45).render(
-            f'{text}', True, DTColor.BUTTON_NO_RED)
+            CLOCK_FONT, 90).render(
+            str(text), True, DTColor.BUTTON_NO_RED)
 
         text_rect = bazaar_price_text.get_rect()
         text_rect.center = ((self.game_display.width / 4) * 3, self.game_display.height / 4)
@@ -179,7 +179,7 @@ class BattleView(BaseView):
 
     def finish_battle(self):
         if self.rewards:
-            print(f'Rewards:\n{self.rewards}')
+            print('Rewards:\n{}'.format(self.rewards))
             self.rewards.append(InventoryItems.WARRIOR)
             end_event = pygame.event.Event(DTUserEvent.DT_SELECTION, {'dt_event': DTEvent.SHOW_INVENTORY,
                                                                       'items': self.rewards})

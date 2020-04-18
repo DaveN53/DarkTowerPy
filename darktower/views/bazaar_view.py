@@ -7,6 +7,7 @@ from darktower.constants.defaults import CLOCK_FONT
 from darktower.constants.dt_color import DTColor
 from darktower.enums import DTEvent, DTUserEvent, AudioFile, INVENTORY_IMAGES, InventoryItems
 from darktower.dt_game_display import DTGameDisplay
+from darktower.utilities import load_image
 from darktower.views.base_view import BaseView
 from darktower.widgets.dt_button import DTButton
 
@@ -49,12 +50,14 @@ class BazaarView(BaseView):
 
         self.items = self.get_bazaar_items()
         self.selected_item = InventoryItems.FOOD
+        self.bazaar_image = load_image(INVENTORY_IMAGES[self.selected_item])
         self.purchase = False
         self.purchase_count = 1
 
     def refresh(self):
         self.items = self.get_bazaar_items()
         self.selected_item = InventoryItems.FOOD
+        self.bazaar_image = load_image(INVENTORY_IMAGES[self.selected_item])
         self.purchase_count = 1
         self.purchase = False
 
@@ -85,11 +88,13 @@ class BazaarView(BaseView):
         pygame.event.post(exit_event)
 
     def next_item(self):
-        item_index = BAZAAR_ITEMS.index(self.selected_item)
+        items_keys = list(self.items.keys())
+        item_index = items_keys.index(self.selected_item)
         item_index += 1
-        if item_index > len(BAZAAR_ITEMS) - 1:
+        if item_index > len(self.items) - 1:
             item_index = 0
-        self.selected_item = BAZAAR_ITEMS[item_index]
+        self.selected_item = items_keys[item_index]
+        self.bazaar_image = load_image(INVENTORY_IMAGES[self.selected_item])
 
     def haggle(self):
         result = random.randrange(0, 100)
@@ -122,8 +127,7 @@ class BazaarView(BaseView):
         self.exit_button.draw()
 
         bazaar_price = self.items[self.selected_item]
-        bazaar_image = pygame.image.load(INVENTORY_IMAGES[self.selected_item])
-        self.game_display.game.blit(bazaar_image, (10, 10))
+        self.game_display.game.blit(self.bazaar_image, (20, 20))
 
         if not self.purchase:
             clock_text = bazaar_price
@@ -131,16 +135,15 @@ class BazaarView(BaseView):
             clock_text = self.purchase_count
 
         bazaar_price_text = pygame.font.Font(
-            CLOCK_FONT, 45).render(
-            f'{clock_text}', True, DTColor.BUTTON_NO_RED)
+            CLOCK_FONT, 90).render(
+            str(clock_text), True, DTColor.BUTTON_NO_RED)
 
         text_rect = bazaar_price_text.get_rect()
         text_rect.center = ((self.game_display.width / 4)*3, self.game_display.height / 4)
         self.game_display.game.blit(bazaar_price_text, text_rect)
 
-    @staticmethod
-    def get_bazaar_items():
-        return {
+    def get_bazaar_items(self):
+        items = {
             InventoryItems.FOOD: 1,
             InventoryItems.WARRIOR: random.randrange(4, 10),
             InventoryItems.BEAST: random.randrange(15, 20),
@@ -148,14 +151,12 @@ class BazaarView(BaseView):
             InventoryItems.HEALER: random.randrange(15, 20)
         }
 
+        # If user already owns one time buy item don't offer it
+        for item in (InventoryItems.HEALER, InventoryItems.SCOUT, InventoryItems.BEAST):
+            if self.game_display.current_items[item]:
+                del items[item]
 
-BAZAAR_ITEMS = [
-    InventoryItems.FOOD,
-    InventoryItems.WARRIOR,
-    InventoryItems.BEAST,
-    InventoryItems.SCOUT,
-    InventoryItems.HEALER
-]
+        return items
 
 
 class BazaarSelection(IntEnum):

@@ -5,6 +5,7 @@ from math import ceil
 
 from darktower.dt_game_display import DTGameDisplay
 from darktower.enums import DTUserEvent, AudioFile, MoveEvent, InventoryItems, EVENT_IMAGES, DTEvent
+from darktower.utilities import load_image
 from darktower.views.base_view import BaseView
 
 
@@ -16,7 +17,8 @@ class MoveView(BaseView):
         self.event_time = 0
         self.initial_event_time = 0
         self.selection_event = None
-
+        self.dragon_image = None
+        self.dragon_kill_image = None
         self.last_beep = self.last = pygame.time.get_ticks()
         self.event = self.get_move_event()
         self.configure_event()
@@ -24,7 +26,7 @@ class MoveView(BaseView):
     def get_event_images(self, event):
         image = self.images.get(event)
         if not image:
-            image = pygame.image.load(EVENT_IMAGES[event])
+            image = load_image(EVENT_IMAGES[event])
             self.images[event] = image
 
         return image
@@ -52,11 +54,14 @@ class MoveView(BaseView):
     def display_dragon_event(self):
         now = pygame.time.get_ticks()
         if ((now - self.last) > 1200) and self.event == MoveEvent.DRAGON_KILL:
-            # TODO don't load for every frame
-            dragon_image = pygame.image.load(EVENT_IMAGES[MoveEvent.DRAGON_KILL])
+            if not self.dragon_kill_image:
+                self.dragon_kill_image = load_image(EVENT_IMAGES[MoveEvent.DRAGON_KILL])
+            dragon_image = self.dragon_kill_image
             event_time = 5000
         else:
-            dragon_image = pygame.image.load(EVENT_IMAGES[MoveEvent.DRAGON])
+            if not self.dragon_image:
+                self.dragon_image = load_image(EVENT_IMAGES[MoveEvent.DRAGON])
+            dragon_image = self.dragon_image
             event_time = 3000
         self.display_event(dragon_image)
 
@@ -111,17 +116,17 @@ class MoveView(BaseView):
                 event = MoveEvent.PLAGUE_HEALER
             else:
                 event = MoveEvent.PLAGUE
-        elif rand < 50:
+        elif rand < 55:
             event = MoveEvent.BATTLE
 
-        print(f'rand: {rand}, event: {event}')
+        print('rand: {}, event: {}'.format(rand, event))
 
         self.play_event_audio(event)
         return event
 
     def configure_event(self):
         if self.event == MoveEvent.SAFE:
-            self.event_time = 0
+            self.event_time = 1000
             self.selection_event = pygame.event.Event(DTUserEvent.DT_SELECTION, {'dt_event': DTEvent.END_TURN})
         elif self.event == MoveEvent.DRAGON:
             stolen_warriors = ceil(self.game_display.current_warriors / 4)

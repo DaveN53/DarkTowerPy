@@ -1,3 +1,5 @@
+import pygame
+
 from darktower.dt_game_display import DTGameDisplay
 from darktower.enums import DTEvent
 from darktower.views.view_factory import ViewFactory
@@ -36,8 +38,12 @@ class ViewManager:
         if type(self.dt_event) is not DTEvent:
             return
 
+        self.game_display.game.fill((0, 0, 0))
+
         if not self.current_view:
             self.current_view = self.view_factory.build_view(self.dt_event, **self.extra_args)
             self.views[self.dt_event] = self.current_view
 
         self.current_view.display()
+
+        pygame.display.update()

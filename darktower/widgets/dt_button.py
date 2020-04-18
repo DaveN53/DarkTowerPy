@@ -28,14 +28,17 @@ class DTButton:
         self.font_size = kwargs.get('font_size', DEFAULT_FONT_SIZE)
         self.text_color = kwargs.get('text_color', DEFAULT_FONT_COLOR)
 
-    def draw(self):
+    def draw(self, color=None, enabled: bool = True):
+        button_color = color or self.color
         if self.is_mouse_hovering():
-            pygame.draw.rect(self.game_display.game, tuple(c + 10 for c in self.color), self.button)
+            pygame.draw.rect(self.game_display.game, tuple(min(c + 20, 255) for c in button_color), self.button)
             if self.game_display.current_event.type == pygame.MOUSEBUTTONUP and self.action:
-                self.action(*self.action_args)
+                print('Pressed: {}\nEnabled: {}'.format(self.text, enabled))
+                if enabled:
+                    self.action(*self.action_args)
 
         else:
-            pygame.draw.rect(self.game_display.game, self.color, self.button)
+            pygame.draw.rect(self.game_display.game, button_color, self.button)
 
         if self.text:
             self.draw_text()

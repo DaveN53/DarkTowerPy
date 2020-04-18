@@ -3,7 +3,7 @@ from enum import IntEnum
 import os
 import pygame
 
-RESOURCES = os.path.join(os.path.dirname(__file__), 'views\\resources')
+RESOURCES = os.path.join(os.path.dirname(__file__), 'views', 'resources')
 FONTS = os.path.join(RESOURCES, 'font')
 IMAGES = os.path.join(RESOURCES, 'images')
 SOUNDS = os.path.join(RESOURCES, 'sounds')

@@ -6,15 +6,17 @@ from darktower.player import Player
 
 class DTGameDisplay:
     def __init__(self):
-        self.width = 320
-        self.height = 240
+        self.width = 640
+        self.height = 480
         self.current_event = None
         pygame.init()
-        self.game = pygame.display.set_mode((self.width, self.height))
+        self.game = pygame.display.set_mode(size=(self.width, self.height))  #, flags=pygame.FULLSCREEN)
+        self.width, self.height = pygame.display.get_surface().get_size()
+        print('Screen Size: {} x {}'.format(self.width, self.height))
         pygame.display.set_caption('Dark Tower')
         self.difficulty = None
         self.players = []
-        self.c_player: Player = None
+        self.c_player = None
         self.dragon = {InventoryItems.WARRIOR: 0, InventoryItems.GOLD: 0}
 
     @property
@@ -76,7 +78,7 @@ class DTGameDisplay:
 
     def attempt_purchase(self, price: int, item: InventoryItems, item_count: int):
         player = self.players[self.current_player]
-        if price > player.gold:
+        if price > self.current_gold:
             return pygame.event.Event(DTUserEvent.DT_SELECTION,
                                       {'dt_event': DTEvent.BAZAAR_CLOSED})
         else:
@@ -84,11 +86,11 @@ class DTGameDisplay:
                 return pygame.event.Event(DTUserEvent.DT_SELECTION,
                                           {'dt_event': DTEvent.SHOW_INVENTORY,
                                            'items': [item]})
-            player.gold -= price
+            self.current_gold -= price
             player.update_item(item, item_count)
             return pygame.event.Event(DTUserEvent.DT_SELECTION,
                                       {'dt_event': DTEvent.SHOW_INVENTORY,
-                                       'items': [item]})
+                                       'items': [item, InventoryItems.GOLD]})
 
 
 
